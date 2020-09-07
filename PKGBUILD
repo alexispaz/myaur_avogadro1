@@ -7,7 +7,7 @@ pkgdesc='Molecule editor and visualizer designed for cross-platform use'
 arch=("x86_64")
 url="http://avogadro.cc/"
 license=('GPL2')
-depends=('eigen' 'openbabel' 'qt4')
+depends=('eigen' 'openbabel2' 'qt4')
 makedepends=('cmake' 'doxygen' 'git')
 source=("${pkgname}"::'git+https://github.com/Avogadro/avogadro.git')
 provides=('avogadro')
@@ -22,7 +22,7 @@ build() {
 		mkdir build
         	cd build
     	fi
-        cmake ../
+        cmake -DOPENBABEL2_LIBRARIES=/usr/lib64/libopenbabel.so.5 ../
         make -j2
 }
 
@@ -30,6 +30,7 @@ build() {
 package() {
 	cd "$pkgname/build"
         make DESTDIR="$pkgdir/" install
+        mv $pkgdir/usr/local/share/man $pkgdir/usr/local/man
 }
 
 
